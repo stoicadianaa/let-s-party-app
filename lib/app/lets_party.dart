@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lets_party/app/home/home_screen.dart';
+import 'package:lets_party/app/login/login_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:localization/localization.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,21 +9,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    LocalJsonLocalization.delegate.directories = ['lib/i18n'];
+
     return MaterialApp(
+      localizationsDelegates: [
+        // delegate from flutter_localization
+        // GlobalMaterialLocalizations.delegate,
+        // GlobalWidgetsLocalizations.delegate,
+        // GlobalCupertinoLocalizations.delegate,
+        // delegate from localization package.
+        LocalJsonLocalization.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', 'US'),
+      ],
       title: 'Flutter Demo',
       theme: appThemeData,
-      builder: (context, child) => ResponsiveWrapper.builder(
-        child,
-        maxWidth: 1200,
-        minWidth: 480,
-        defaultScale: true,
-        breakpoints: const [
-          ResponsiveBreakpoint.resize(480, name: MOBILE),
-          ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-        ],
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const LoginScreen(),
     );
   }
 }
