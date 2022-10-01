@@ -7,5 +7,6 @@ const Color babyPowder = Color(0xFFF7F7F2);
 const Color jet = Color(0xFF292929);
 
 ThemeData appThemeData = ThemeData(
-primarySwatch: Colors.blue,
+  colorScheme: ColorScheme.fromSwatch().copyWith(primary: gamboge, secondary: babyPowder),
+  primaryColor: gamboge,
 );
