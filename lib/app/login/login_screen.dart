@@ -11,7 +11,6 @@ class LoginScreen extends StatelessWidget {
   String? _email;
   String? _password;
   LoginBloc bloc = LoginBloc();
-  final bool _visiblePassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,7 @@ class LoginScreen extends StatelessWidget {
                       }
                       return null;
                     },
-                    obscureText: !_visiblePassword,
+                    obscureText: !bloc.visiblePassword,
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.visiblePassword,
                     suffixIcon: Consumer<LoginBloc>(
@@ -71,9 +70,10 @@ class LoginScreen extends StatelessWidget {
                         return TextButton(
                           onPressed: () => bloc.changePasswordVisibility(),
                           child: Text(
-                            _visiblePassword ? "Hide" : "Show",
+                            bloc.visiblePassword ? "Hide" : "Show",
                             style: TextStyle(
-                                color: Theme.of(context).primaryColor,),
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         );
                       },

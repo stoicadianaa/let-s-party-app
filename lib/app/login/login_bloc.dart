@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/core/service/firebase_service.dart';
-import 'package:provider/provider.dart';
 
 class LoginBloc extends ChangeNotifier {
   final FirebaseService _firebaseService = FirebaseService();
@@ -16,5 +15,8 @@ class LoginBloc extends ChangeNotifier {
     );
   }
 
-  void changePasswordVisibility() => visiblePassword = !visiblePassword;
+  void changePasswordVisibility() {
+    visiblePassword = !visiblePassword;
+    notifyListeners();
+  }
 }
