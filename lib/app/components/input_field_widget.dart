@@ -8,8 +8,9 @@ class InputField extends StatelessWidget {
   final TextInputType? keyboardType;
   final Widget? suffixIcon;
   final TextInputAction? textInputAction;
+  String initialValue;
 
-  const InputField({
+  InputField({
     required this.onChanged,
     required this.hintText,
     this.validator,
@@ -17,6 +18,7 @@ class InputField extends StatelessWidget {
     this.keyboardType,
     this.suffixIcon,
     this.textInputAction,
+    this.initialValue = '',
   });
 
   @override
@@ -27,6 +29,7 @@ class InputField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: keyboardType ?? TextInputType.text,
       textInputAction: textInputAction,
+      initialValue: initialValue,
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         border: const OutlineInputBorder(),
