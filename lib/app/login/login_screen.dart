@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/components/input_field_widget.dart';
 import 'package:lets_party/app/login/login_bloc.dart';
+import 'package:lets_party/app/signup/signup_screen.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/constants/app_styles.dart';
 import 'package:localization/localization.dart';
@@ -27,6 +28,19 @@ class LoginScreen extends StatelessWidget {
             ),
             centerTitle: true,
             toolbarHeight: 80.0,
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SignUpScreen(),
+                      ),
+                    );
+                  },
+                  child: Text("Sign Up".i18n()),
+              )
+            ],
           ),
           body: Padding(
             padding: const EdgeInsets.all(AppDimens.padding_2x),

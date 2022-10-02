@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:lets_party/core/service/firebase_service.dart';
+import 'package:lets_party/core/service/firebase_auth_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginBloc extends ChangeNotifier {
-  final FirebaseService _firebaseService = FirebaseService();
+  final FirebaseAuthService _firebaseService = FirebaseAuthService();
   bool visiblePassword = false;
 
-  Future<void> login (BuildContext context, String? email, String? password) async {
+  Future<void> login(
+      BuildContext context, String? email, String? password) async {
     final String? errorMessage =
-    await _firebaseService.mailSignIn(email, password);
+        await _firebaseService.mailSignIn(email, password);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(errorMessage ?? "Authentication successful"),
@@ -15,8 +17,5 @@ class LoginBloc extends ChangeNotifier {
     );
   }
 
-  void changePasswordVisibility() {
-    visiblePassword = !visiblePassword;
-    notifyListeners();
-  }
+  void changePasswordVisibility() => visiblePassword = !visiblePassword;
 }
