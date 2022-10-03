@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lets_party/app/items_page/items_page_screen.dart';
 import 'package:lets_party/app/login/login_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:localization/localization.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       ],
       title: 'Flutter Demo',
       theme: appThemeData,
-      home: LoginScreen(),
+      home: ItemsPage(),
     );
   }
 }
