@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 class PartyButton extends StatelessWidget {
-  String image;
-  String name;
-  VoidCallback onPressed;
+  final String image;
+  final String name;
+  final VoidCallback onPressed;
 
-  PartyButton(
+  const PartyButton(
       {required this.image, required this.name, required this.onPressed});
 
   @override
