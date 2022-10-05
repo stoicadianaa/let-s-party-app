@@ -65,17 +65,17 @@ class MyHomePage extends StatelessWidget {
                   child: Row(
                     children: [
                       PartyButton(
-                        image: "assets/images/party-picture-default.jpg",
+                        image: "assets/images/party-picture-defaultv2.jpg",
                         name: "My Great party",
                         onPressed: () {},
                       ),
                       PartyButton(
-                        image: "assets/images/party-picture-default.jpg",
+                        image: "assets/images/party-picture-defaultv2.jpg",
                         name: "My Great party",
                         onPressed: () {},
                       ),
                       PartyButton(
-                        image: "assets/images/party-picture-default.jpg",
+                        image: "assets/images/party-picture-defaultv2.jpg",
                         name: "My Great party",
                         onPressed: () {},
                       ),
@@ -101,17 +101,17 @@ class MyHomePage extends StatelessWidget {
                   child: Row(
                     children: [
                       PartyButton(
-                        image: "assets/images/party-picture-default.jpg",
+                        image: "assets/images/party-picture-defaultv2.jpg",
                         name: "My Great party",
                         onPressed: () {},
                       ),
                       PartyButton(
-                        image: "assets/images/party-picture-default.jpg",
+                        image: "assets/images/party-picture-defaultv2.jpg",
                         name: "My Great party",
                         onPressed: () {},
                       ),
                       PartyButton(
-                        image: "assets/images/party-picture-default.jpg",
+                        image: "assets/images/party-picture-defaultv2.jpg",
                         name: "My Great party",
                         onPressed: () {},
                       ),
@@ -219,7 +219,7 @@ class PartyButton extends StatelessWidget {
                       width: 200,
                       height: 130,
                       child: Image.asset(
-                        "assets/images/party-picture-default.jpg",
+                        image,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -227,11 +227,11 @@ class PartyButton extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(AppDimens.padding),
+            Padding(
+              padding: const EdgeInsets.all(AppDimens.padding),
               child: Text(
-                "My Great Party",
-                style: TextStyle(
+                name,
+                style: const TextStyle(
                   fontSize: 15,
                 ),
               ),
