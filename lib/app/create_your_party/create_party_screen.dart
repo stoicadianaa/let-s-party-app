@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_party/app/components/input_field_widget.dart';
+import 'package:lets_party/app/create_your_party/TestScreen.dart';
 import 'package:lets_party/app/create_your_party/components/ImagePickingZone.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
+import 'package:lets_party/app/signup/signup_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/gen/fonts.gen.dart';
@@ -52,7 +54,7 @@ class CreatePartyScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ImagePickingZone(),
+                  ImagePickingZone(bloc: bloc,),
                   const SizedBox(
                     height: AppDimens.padding_2x,
                   ),
@@ -209,7 +211,9 @@ class CreatePartyScreen extends StatelessWidget {
           floatingActionButton: Padding(
             padding: const EdgeInsets.all(AppDimens.padding_2x),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(bloc: bloc)));
+              },
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(
                   Size(

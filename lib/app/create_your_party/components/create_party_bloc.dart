@@ -11,7 +11,7 @@ import 'package:lets_party/core/service/realtime_database_service.dart';
 
 class CreatePartyBloc extends ChangeNotifier {
   PartyModel partyModel = PartyModel(null, null, null, null, null, null, null, null);
-  File? imageFile;
+  String? imageFile;
 
   static String getDateFormatted(DateTime date) =>
       "${date.year.toString()}-${date.month.toString()}-${date.day.toString()}";

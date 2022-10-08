@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 
 class ImagePickingZone extends StatefulWidget {
-  const ImagePickingZone({Key? key}) : super(key: key);
+
+  ImagePickingZone({required this.bloc});
+  CreatePartyBloc bloc;
 
   @override
   _ImagePickingZoneState createState() => _ImagePickingZoneState();
@@ -22,8 +25,8 @@ class _ImagePickingZoneState extends State<ImagePickingZone> {
 
       if (image == null) return;
 
+      widget.bloc.imageFile = image.path;
       final imageTemp = File(image.path);
-
       setState(() => this.image = imageTemp);
       this.isImagedPicked = true;
     } on PlatformException catch (e) {
@@ -64,7 +67,7 @@ class _ImagePickingZoneState extends State<ImagePickingZone> {
                 image: image != null
                     ? DecorationImage(
                         image: FileImage(image!),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       )
                     : null,
                 borderRadius: BorderRadius.circular(18.0),
