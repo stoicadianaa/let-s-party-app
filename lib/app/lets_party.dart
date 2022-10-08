@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lets_party/app/home/home_screen.dart';
 import 'package:lets_party/app/items_page/items_page_screen.dart';
 import 'package:lets_party/app/login/login_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:localization/localization.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -24,6 +26,16 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         Locale('en', 'US'),
       ],
+      builder: (context, child) => ResponsiveWrapper.builder(
+    child,
+    maxWidth: 1200,
+    minWidth: 480,
+    defaultScale: true,
+    breakpoints: [
+    ResponsiveBreakpoint.resize(480, name: MOBILE),
+    ResponsiveBreakpoint.autoScale(800, name: TABLET),
+    ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+    ],),
       title: 'Flutter Demo',
       theme: appThemeData,
       home: ItemsPage(),

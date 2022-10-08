@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/core/service/firebase_auth_service.dart';
-import 'package:provider/provider.dart';
-import 'package:lets_party/core/service/firebase_service.dart';
 
 class LoginBloc extends ChangeNotifier {
   final FirebaseAuthService _firebaseService = FirebaseAuthService();

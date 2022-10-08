@@ -5,25 +5,29 @@ class HomeMenu extends StatelessWidget {
   RealtimeDatabaseService realtimeDatabaseService = new RealtimeDatabaseService();
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        PageButton(
-            onPressed: (){},
-            svgAssetPath: "assets/images/create_party.svg",
-            text: "create party"),
-        PageButton(
-            onPressed: () {},
-            svgAssetPath: "assets/images/my-invites.svg",
-            text: "my invites"),
-        PageButton(
-            onPressed: () {},
-            svgAssetPath: "assets/images/party-games.svg",
-            text: "party games"),
-        PageButton(
-            onPressed: () {},
-            svgAssetPath: "assets/images/settings.svg",
-            text: "settings"),
-      ],
+    return Container(
+      height: 80,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          PageButton(
+              onPressed: (){},
+              svgAssetPath: "assets/images/create_party.svg",
+              text: "create party"),
+          PageButton(
+              onPressed: () {},
+              svgAssetPath: "assets/images/my-invites.svg",
+              text: "my invites"),
+          PageButton(
+              onPressed: () {},
+              svgAssetPath: "assets/images/party-games.svg",
+              text: "party games"),
+          PageButton(
+              onPressed: () {},
+              svgAssetPath: "assets/images/settings.svg",
+              text: "settings"),
+        ],
+      ),
     );
   }
 }
