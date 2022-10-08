@@ -9,4 +9,9 @@ const Color jet = Color(0xFF292929);
 ThemeData appThemeData = ThemeData(
   colorScheme: ColorScheme.fromSwatch().copyWith(primary: gamboge, secondary: babyPowder),
   primaryColor: gamboge,
+  appBarTheme: const AppBarTheme(
+    centerTitle: true,
+    toolbarHeight: 80.0,
+    elevation: 0.0,
+  )
 );
