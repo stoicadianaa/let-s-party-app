@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:lets_party/app/create_your_party/components/ImagePickingZone.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/gen/fonts.gen.dart';
@@ -32,6 +34,20 @@ class CreatePartyScreen extends StatelessWidget {
             ),
           ),
           centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.padding_2x,
+            vertical: AppDimens.padding_2x,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                ImagePickingZone()
+              ],
+            ),
+          ),
         ),
       ),
     );

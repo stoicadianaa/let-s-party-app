@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lets_party/app/create_your_party/create_party_screen.dart';
 import 'package:lets_party/app/home/home_screen.dart';
+import 'package:lets_party/app/home/home_screen_bloc.dart';
 import 'package:lets_party/app/items_page/items_page_screen.dart';
 import 'package:lets_party/app/login/login_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
     ],),
       title: 'Flutter Demo',
       theme: appThemeData,
-      home: LoginScreen(),
+      home: CreatePartyScreen(),
     );
   }
 }
