@@ -8,12 +8,15 @@ class AppStyles {
     fontSize: 32.0,
     fontFamily: FontFamily.keepOnTrucking,
   );
+
   static const categorytyle = TextStyle(
     color: jet,
     fontSize: 24.0,
     fontFamily: FontFamily.keepOnTrucking,
   );
+
   static const bodyStyle = TextStyle(
     height: 1.2,
+    fontSize: 20.0,
   );
 }

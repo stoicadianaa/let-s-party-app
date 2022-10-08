@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lets_party/app/home/components/home_menu.dart';
 import 'package:lets_party/app/home/components/party_button.dart';
 import 'package:lets_party/app/home/home_screen_bloc.dart';
+import 'package:lets_party/app/party_invited/party_invited_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/core/model/party_model.dart';
@@ -89,16 +90,18 @@ class MyHomePage extends StatelessWidget {
                                     .length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
+                                  PartyModel party = homeScreenBloc.listOfParties['possible'][index] as PartyModel;
                                   return PartyButton(
-                                    image: (homeScreenBloc
-                                                .listOfParties['possible']
-                                            [index] as PartyModel)
-                                        .pictureLink!,
-                                    name: (homeScreenBloc
-                                                .listOfParties['possible']
-                                            [index] as PartyModel)
-                                        .name!,
-                                    onPressed: () {},
+                                    image: party.pictureLink!,
+                                    name: party.name!,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>  PartyInvited(party.id!),
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
                               ),
@@ -126,16 +129,19 @@ class MyHomePage extends StatelessWidget {
                                     .length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
+                                  PartyModel party = homeScreenBloc.listOfParties['hosted']
+                                  [index] as PartyModel;
                                   return PartyButton(
-                                    image:
-                                        (homeScreenBloc.listOfParties['hosted']
-                                                [index] as PartyModel)
-                                            .pictureLink!,
-                                    name:
-                                        (homeScreenBloc.listOfParties['hosted']
-                                                [index] as PartyModel)
-                                            .name!,
-                                    onPressed: () {},
+                                    image: party.pictureLink!,
+                                    name: party.name!,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>  PartyInvited(party.id!),
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
                               ),
