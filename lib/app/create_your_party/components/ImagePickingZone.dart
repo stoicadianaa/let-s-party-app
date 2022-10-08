@@ -70,11 +70,12 @@ class _ImagePickingZoneState extends State<ImagePickingZone> {
                 borderRadius: BorderRadius.circular(18.0),
               ),
               child: image == null
-                  ? Center(
+                  ? const Center(
                       child: Text(
-                        "add photo",
+                        "Add picture",
                         style: TextStyle(
-                            fontSize: 25, color: Colors.grey.shade800),
+                            fontSize: 25, color: Colors.black,
+                        fontWeight: FontWeight.bold,),
                       ),
                     )
                   : Padding(
