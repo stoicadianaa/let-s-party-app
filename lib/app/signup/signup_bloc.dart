@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_party/app/mixins/string_mixins.dart';
 import 'package:lets_party/core/model/user_model.dart';
 import 'package:lets_party/core/service/firebase_auth_service.dart';
 import 'package:lets_party/core/service/realtime_database_service.dart';
 
-class SignUpBloc extends ChangeNotifier {
+class SignUpBloc extends ChangeNotifier with StringMixins {
   UserModel userModel = UserModel.allFields(null, null, null);
   String? password;
   bool visiblePassword = false;
@@ -22,9 +23,6 @@ class SignUpBloc extends ChangeNotifier {
     return message ?? "Authentication successful";
   }
 
-  String getDateFormatted(DateTime date) =>
-      "${date.day.toString()}/${date.month.toString()}/${date.year.toString()}";
-
   void changePasswordVisibility() {
     visiblePassword = !visiblePassword;
     notifyListeners();
@@ -39,7 +37,7 @@ class SignUpBloc extends ChangeNotifier {
       lastDate: DateTime.utc(DateTime.now().year - 10),
     );
     if(date != null) {
-      userModel.birthday = getDateFormatted(date);
+      userModel.birthday = formatDate(date);
     }
     notifyListeners();
   }
