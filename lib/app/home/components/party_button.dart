@@ -25,7 +25,7 @@ class PartyButton extends StatelessWidget {
                     Container(
                       width: 200,
                       height: 130,
-                      child: Image.asset(
+                      child: Image.network(
                         image,
                         fit: BoxFit.cover,
                       ),
