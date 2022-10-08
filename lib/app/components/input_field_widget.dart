@@ -33,9 +33,17 @@ class InputField extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
         suffixIcon: suffixIcon,
-        border: const OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          borderSide: const BorderSide(
+            color: Color(0xFFBDBDBD),
+          )
+        ),
         hintText: hintText,
         filled: true,
+        hintStyle: const TextStyle(
+          color: Color(0xFFBDBDBD),
+        )
       ),
     );
   }
