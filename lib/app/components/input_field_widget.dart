@@ -34,7 +34,7 @@ class InputField extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18.0),
+          borderRadius: BorderRadius.circular(16.0),
           borderSide: const BorderSide(
             color: Color(0xFFBDBDBD),
           )
