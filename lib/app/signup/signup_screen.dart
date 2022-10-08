@@ -137,7 +137,7 @@ class SignUpScreen extends StatelessWidget {
                 fixedSize: MaterialStateProperty.all(
                   Size(
                     MediaQuery.of(context).size.width,
-                    50,
+                    55,
                   ),
                 ),
                 shape: MaterialStateProperty.all(
@@ -146,7 +146,9 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text("Sign Up".i18n()),
+              child: const Text("Sign Up", style: TextStyle(
+                fontSize: 20,
+              ),),
             ),
           ),
           floatingActionButtonLocation:

@@ -13,5 +13,5 @@ ThemeData appThemeData = ThemeData(
     centerTitle: true,
     toolbarHeight: 80.0,
     elevation: 0.0,
-  )
+  ),
 );

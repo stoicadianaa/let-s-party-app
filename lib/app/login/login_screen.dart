@@ -105,7 +105,7 @@ class LoginScreen extends StatelessWidget {
                 fixedSize: MaterialStateProperty.all(
                   Size(
                     MediaQuery.of(context).size.width,
-                    50,
+                    55,
                   ),
                 ),
                 shape: MaterialStateProperty.all(
@@ -114,7 +114,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              child: const Text("Log in"),
+              child: const Text("Log in", style: TextStyle(
+                fontSize: 20
+              ),),
             ),
           ),
           floatingActionButtonLocation:

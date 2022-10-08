@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
     ],),
       title: 'Flutter Demo',
       theme: appThemeData,
-      home: ItemsPage(),
+      home: LoginScreen(),
     );
   }
 }
