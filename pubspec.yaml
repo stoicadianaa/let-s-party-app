@@ -41,12 +41,16 @@ dependencies:
   provider: ^6.0.3
   responsive_framework: ^0.2.0
   firebase_auth: ^3.11.0
+  firebase_database: ^9.1.6
+  json_serializable: ^6.4.1
+  cloud_firestore: ^3.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   lint: ^1.10.0
+  build_runner: ^2.2.1
 
 flutter:
   uses-material-design: true
