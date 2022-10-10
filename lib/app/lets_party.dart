@@ -1,11 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_party/app/create_your_party/create_party_screen.dart';
 import 'package:lets_party/app/home/home_screen.dart';
-import 'package:lets_party/app/home/home_screen_bloc.dart';
-import 'package:lets_party/app/items_page/items_page_screen.dart';
 import 'package:lets_party/app/login/login_screen.dart';
-import 'package:lets_party/app/party_invited/party_invited_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:localization/localization.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -26,9 +22,6 @@ class MyApp extends StatelessWidget {
         // GlobalCupertinoLocalizations.delegate,
         // delegate from localization package.
         LocalJsonLocalization.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', 'US'),
       ],
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
