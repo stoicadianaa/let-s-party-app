@@ -24,18 +24,19 @@ class MyApp extends StatelessWidget {
         LocalJsonLocalization.delegate,
       ],
       builder: (context, child) => ResponsiveWrapper.builder(
-    child,
-    maxWidth: 1200,
-    minWidth: 480,
-    defaultScale: true,
-    breakpoints: [
-    const ResponsiveBreakpoint.resize(480, name: MOBILE),
-    const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-    const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-    ],),
+        child,
+        maxWidth: 1200,
+        minWidth: 480,
+        defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.resize(480, name: MOBILE),
+          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+        ],
+      ),
       title: 'Flutter Demo',
       theme: appThemeData,
-      home: FirebaseAuth.instance.currentUser == null ? LoginScreen() : const MyHomePage(),
+      home: FirebaseAuth.instance.currentUser == null ? LoginScreen() : MyHomePage(),
     );
   }
 }

@@ -5,7 +5,8 @@ class LoginBloc extends ChangeNotifier {
   final FirebaseAuthService _firebaseService = FirebaseAuthService();
   bool visiblePassword = false;
 
-  Future<void> login(
+  Future<
+  bool> login(
       BuildContext context, String? email, String? password) async {
     final String? errorMessage =
         await _firebaseService.mailSignIn(email, password);
@@ -14,6 +15,7 @@ class LoginBloc extends ChangeNotifier {
         content: Text(errorMessage ?? "Authentication successful"),
       ),
     );
+    return errorMessage == null;
   }
 
   void changePasswordVisibility() {

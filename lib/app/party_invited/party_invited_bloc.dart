@@ -4,6 +4,7 @@ import 'package:lets_party/core/service/realtime_database_service.dart';
 
 class PartyInvitedBloc extends ChangeNotifier {
   PartyModel? party;
+  String? hostName;
   final RealtimeDatabaseService _service = RealtimeDatabaseService();
 
   PartyInvitedBloc(String partyID) {
@@ -11,11 +12,14 @@ class PartyInvitedBloc extends ChangeNotifier {
   }
 
   Future<void> loadParty(String partyID) async {
-    party = await _service.getPartyDetails(partyID);
+
+    try {
+      party = await _service.getPartyDetails(partyID);
+      hostName = (await _service.getUserFromFirebase(party!.hostEmail!)).name;
+    } on Exception catch (e) {
+      // TODO
+    }
     notifyListeners();
   }
 
-  Future<String?> getHostName() async {
-    // _service.getUserFromFirebase(party.hostEmail!);
-  }
 }
