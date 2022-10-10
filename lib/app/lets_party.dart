@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/create_your_party/create_party_screen.dart';
 import 'package:lets_party/app/home/home_screen.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Flutter Demo',
       theme: appThemeData,
-      home: LoginScreen(),
+      home: FirebaseAuth.instance.currentUser == null ? LoginScreen() : MyHomePage(),
     );
   }
 }

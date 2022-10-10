@@ -1,6 +1,4 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
@@ -18,6 +16,12 @@ class UserModel {
   UserModel(this.name, this.birthday);
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+
+  UserModel.fromQueryDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc, String email) {
+    this.email = email;
+    birthday = doc['birthday'] as String;
+    name = doc['name'] as String;
+  }
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

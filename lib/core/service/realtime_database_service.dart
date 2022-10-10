@@ -84,9 +84,8 @@ class RealtimeDatabaseService {
     return party;
   }
 
-  // Future<void> getUserFromFirebase(String email) async {
-  //   var data = FirebaseFirestore.instance.doc("user/$email").get().then((value) {
-  //     return value;
-  //   });
-  // }
+  Future<UserModel> getUserFromFirebase(String email) async {
+    final firestoreDoc = await FirebaseFirestore.instance.doc("users/$email").get();
+    return UserModel.fromQueryDocumentSnapshot(firestoreDoc, email);
+  }
 }
