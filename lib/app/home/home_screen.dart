@@ -3,6 +3,7 @@ import 'package:lets_party/app/home/components/home_menu.dart';
 import 'package:lets_party/app/home/components/party_button.dart';
 import 'package:lets_party/app/home/home_screen_bloc.dart';
 import 'package:lets_party/app/party_invited/party_invited_screen.dart';
+import 'package:lets_party/app/settings/settings_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/core/model/party_model.dart';
@@ -25,7 +26,7 @@ class MyHomePage extends StatelessWidget {
             leadingWidth: 100.0,
             toolbarHeight: 80.0,
             leading: TextButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pop(context),
               child: const Text(
                 "Back",
                 style: TextStyle(
@@ -34,6 +35,19 @@ class MyHomePage extends StatelessWidget {
                 ),
               ),
             ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen())),
+                child: const Text(
+                  "Settings",
+                  style: TextStyle(
+                    color: gamboge,
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ],
             title: const Text(
               "let's party!",
               style: TextStyle(
@@ -90,7 +104,9 @@ class MyHomePage extends StatelessWidget {
                                     .length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  PartyModel party = homeScreenBloc.listOfParties['possible'][index] as PartyModel;
+                                  PartyModel party =
+                                      homeScreenBloc.listOfParties['possible']
+                                          [index] as PartyModel;
                                   return PartyButton(
                                     image: party.pictureLink!,
                                     name: party.name!,
@@ -98,7 +114,8 @@ class MyHomePage extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (BuildContext context) =>  PartyInvited(party.id!),
+                                          builder: (BuildContext context) =>
+                                              PartyInvited(party.id!),
                                         ),
                                       );
                                     },
@@ -129,8 +146,9 @@ class MyHomePage extends StatelessWidget {
                                     .length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  PartyModel party = homeScreenBloc.listOfParties['hosted']
-                                  [index] as PartyModel;
+                                  PartyModel party =
+                                      homeScreenBloc.listOfParties['hosted']
+                                          [index] as PartyModel;
                                   return PartyButton(
                                     image: party.pictureLink!,
                                     name: party.name!,
@@ -138,7 +156,8 @@ class MyHomePage extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (BuildContext context) =>  PartyInvited(party.id!),
+                                          builder: (BuildContext context) =>
+                                              PartyInvited(party.id!),
                                         ),
                                       );
                                     },

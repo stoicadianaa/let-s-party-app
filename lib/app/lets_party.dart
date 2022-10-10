@@ -1,10 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_party/app/create_your_party/create_party_screen.dart';
 import 'package:lets_party/app/home/home_screen.dart';
-import 'package:lets_party/app/home/home_screen_bloc.dart';
-import 'package:lets_party/app/items_page/items_page_screen.dart';
 import 'package:lets_party/app/login/login_screen.dart';
-import 'package:lets_party/app/party_invited/party_invited_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:localization/localization.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -26,22 +23,19 @@ class MyApp extends StatelessWidget {
         // delegate from localization package.
         LocalJsonLocalization.delegate,
       ],
-      supportedLocales: const [
-        Locale('en', 'US'),
-      ],
       builder: (context, child) => ResponsiveWrapper.builder(
     child,
     maxWidth: 1200,
     minWidth: 480,
     defaultScale: true,
     breakpoints: [
-    ResponsiveBreakpoint.resize(480, name: MOBILE),
-    ResponsiveBreakpoint.autoScale(800, name: TABLET),
-    ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+    const ResponsiveBreakpoint.resize(480, name: MOBILE),
+    const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+    const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
     ],),
       title: 'Flutter Demo',
       theme: appThemeData,
-      home: MyHomePage(),
+      home: FirebaseAuth.instance.currentUser == null ? LoginScreen() : const MyHomePage(),
     );
   }
 }
