@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/components/input_field_widget.dart';
+import 'package:lets_party/app/home/home_screen.dart';
 import 'package:lets_party/app/signup/signup_bloc.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
@@ -25,7 +26,7 @@ class SignUpScreen extends StatelessWidget {
               "Sign Up".i18n().toLowerCase(),
               style: AppStyles.appBarStyle,
             ),
-            leading: TextButton (
+            leading: TextButton(
               child: Text("Back".i18n()),
               onPressed: () => Navigator.pop(context),
             ),
@@ -106,12 +107,12 @@ class SignUpScreen extends StatelessWidget {
                           await bloc.pickDate(context);
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(gamboge.withOpacity(0.5)),
+                          backgroundColor: MaterialStateProperty.all(
+                            gamboge.withOpacity(0.5),
+                          ),
                         ),
                         child: Text(
-                          "Birthday: ${
-                              bloc.userModel.birthday ?? "Choose date"
-                          }",
+                          "Birthday: ${bloc.userModel.birthday ?? "Choose date"}",
                         ),
                       ),
                     ],
@@ -124,13 +125,21 @@ class SignUpScreen extends StatelessWidget {
             padding: const EdgeInsets.all(AppDimens.padding_2x),
             child: ElevatedButton(
               onPressed: () async {
-                if (_formKey.currentState!.validate() && bloc.userModel.birthday != null) {
-                  final String message = await bloc.createAccount(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(message),
-                    ),
-                  );
+                if (_formKey.currentState!.validate() &&
+                    bloc.userModel.birthday != null) {
+                  final String? message = await bloc.createAccount(context);
+                  message != null
+                      ? ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(message),
+                          ),
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyHomePage(),
+                          ),
+                        );
                 }
               },
               style: ButtonStyle(
@@ -146,9 +155,12 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              child: const Text("Sign Up", style: TextStyle(
-                fontSize: 20,
-              ),),
+              child: const Text(
+                "Sign Up",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
             ),
           ),
           floatingActionButtonLocation:

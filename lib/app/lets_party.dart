@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/create_your_party/create_party_screen.dart';
 import 'package:lets_party/app/home/home_screen.dart';
@@ -30,18 +31,19 @@ class MyApp extends StatelessWidget {
         Locale('en', 'US'),
       ],
       builder: (context, child) => ResponsiveWrapper.builder(
-    child,
-    maxWidth: 1200,
-    minWidth: 480,
-    defaultScale: true,
-    breakpoints: [
-    ResponsiveBreakpoint.resize(480, name: MOBILE),
-    ResponsiveBreakpoint.autoScale(800, name: TABLET),
-    ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-    ],),
+        child,
+        maxWidth: 1200,
+        minWidth: 480,
+        defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.resize(480, name: MOBILE),
+          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+        ],
+      ),
       title: 'Flutter Demo',
       theme: appThemeData,
-      home: MyHomePage(),
+      home: FirebaseAuth.instance.currentUser == null ? LoginScreen() : MyHomePage(),
     );
   }
 }
