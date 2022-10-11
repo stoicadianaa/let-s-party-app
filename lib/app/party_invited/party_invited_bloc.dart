@@ -12,11 +12,10 @@ class PartyInvitedBloc extends ChangeNotifier {
   }
 
   Future<void> loadParty(String partyID) async {
-
     try {
       party = await _service.getPartyDetails(partyID);
       hostName = (await _service.getUserFromFirebase(party!.hostEmail!)).name;
-    } on Exception catch (e) {
+    } on Exception {
       // TODO
     }
     notifyListeners();
