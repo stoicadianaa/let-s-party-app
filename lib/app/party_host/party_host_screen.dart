@@ -99,6 +99,7 @@ class PartyHost extends StatelessWidget {
         Visibility(
           visible: bloc.partyGuests!.coming.isNotEmpty,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "who is coming?",
@@ -114,6 +115,7 @@ class PartyHost extends StatelessWidget {
         Visibility(
           visible: bloc.partyGuests!.invited.isNotEmpty,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "waiting for RSVP",
@@ -129,6 +131,7 @@ class PartyHost extends StatelessWidget {
         Visibility(
           visible: bloc.partyGuests!.notComing.isNotEmpty,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "won’t be able to come",

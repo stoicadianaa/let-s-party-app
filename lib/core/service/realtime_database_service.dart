@@ -96,12 +96,10 @@ class RealtimeDatabaseService {
 
   static Future<String> getProfileImage(String email) async {
     String imageURL;
-    try {
+
       final storageRef = FirebaseStorage.instance.ref();
       imageURL = await storageRef.child("profile_photos/$email.jpeg").getDownloadURL();
-    } on Exception {
-      imageURL = "https://www.macmillandictionary.com/us/external/slideshow/full/Grey_full.png";
-    }
+
     return imageURL;
   }
 }
