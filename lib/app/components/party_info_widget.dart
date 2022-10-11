@@ -19,18 +19,31 @@ class PartyInfo extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: guestsList.length,
         itemBuilder: (context, index) {
-          return Column(
+          return Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(AppDimens.roundedCorners),
-                child: Image.network(
-                  guestsList[index].imageLink ?? blankPictureURL,
-                  height: 100.0,
-                  width: 100.0,
-                  fit: BoxFit.cover,
-                ),
+              Column(
+                children: [
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(AppDimens.roundedCorners),
+                    child: Image.network(
+                      guestsList[index].imageLink ?? blankPictureURL,
+                      height: 100.0,
+                      width: 100.0,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(
+                      width: 100.0,
+                      child: Text(
+                        guestsList[index].name,
+                        textAlign: TextAlign.center,
+                      )),
+                ],
               ),
-              SizedBox(width: 100.0, child: Text(guestsList[index].name, textAlign: TextAlign.center,)),
+              SizedBox(
+                width: AppDimens.padding_2x,
+              )
             ],
           );
         },

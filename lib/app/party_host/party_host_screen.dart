@@ -45,7 +45,9 @@ class PartyHost extends StatelessWidget {
                           const SizedBox(
                             height: AppDimens.padding_3x,
                           ),
-                          const Divider(thickness: 1.5,),
+                          const Divider(
+                            thickness: 1.5,
+                          ),
                           /*ElevatedButton(
                             onPressed: () {},
                             style: ButtonStyle(
@@ -59,7 +61,9 @@ class PartyHost extends StatelessWidget {
                             ),
                           ),*/
                           buildGuestsInfo(bloc),
-                          const SizedBox(height: AppDimens.padding_2x,),
+                          const SizedBox(
+                            height: AppDimens.padding_2x,
+                          ),
                           ElevatedButton(
                             onPressed: () {},
                             style: ButtonStyle(
@@ -92,30 +96,51 @@ class PartyHost extends StatelessWidget {
         const SizedBox(
           height: AppDimens.padding_3x,
         ),
-        const Text(
-          "who is coming?",
-          style: AppStyles.categorytyle,
+        Visibility(
+          visible: bloc.partyGuests!.coming.isNotEmpty,
+          child: Column(
+            children: [
+              const Text(
+                "who is coming?",
+                style: AppStyles.categorytyle,
+              ),
+              const SizedBox(
+                height: AppDimens.padding_2x,
+              ),
+              PartyInfo(bloc.partyGuests!.coming),
+            ],
+          ),
         ),
-        const SizedBox(
-          height: AppDimens.padding_2x,
+        Visibility(
+          visible: bloc.partyGuests!.invited.isNotEmpty,
+          child: Column(
+            children: [
+              const Text(
+                "waiting for RSVP",
+                style: AppStyles.categorytyle,
+              ),
+              const SizedBox(
+                height: AppDimens.padding_2x,
+              ),
+              PartyInfo(bloc.partyGuests!.invited),
+            ],
+          ),
         ),
-        PartyInfo(bloc.partyGuests!.coming),
-        const Text(
-          "waiting for RSVP",
-          style: AppStyles.categorytyle,
+        Visibility(
+          visible: bloc.partyGuests!.notComing.isNotEmpty,
+          child: Column(
+            children: [
+              const Text(
+                "won’t be able to come",
+                style: AppStyles.categorytyle,
+              ),
+              const SizedBox(
+                height: AppDimens.padding_2x,
+              ),
+              PartyInfo(bloc.partyGuests!.notComing),
+            ],
+          ),
         ),
-        const SizedBox(
-          height: AppDimens.padding_2x,
-        ),
-        PartyInfo(bloc.partyGuests!.invited),
-        const Text(
-          "won’t be able to come",
-          style: AppStyles.categorytyle,
-        ),
-        const SizedBox(
-          height: AppDimens.padding_2x,
-        ),
-        PartyInfo(bloc.partyGuests!.notComing),
       ],
     );
   }
