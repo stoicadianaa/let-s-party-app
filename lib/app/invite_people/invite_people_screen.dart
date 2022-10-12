@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
-import 'package:lets_party/app/invite_people/components/UserPlaceHolder.dart';
+import 'package:lets_party/app/invite_people/components/user_placeholder.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/gen/fonts.gen.dart';
@@ -57,12 +57,12 @@ class InvitePeopleScreen extends StatelessWidget {
                     horizontal: AppDimens.padding_2x),
                 child: Column(
                   children: [
-                    UserPlaceholder(width: width),
+                    user_placeholder(width: width),
                     SizedBox(height: AppDimens.padding_2x),
-                    UserPlaceholder(width: width),
+                    user_placeholder(width: width),
                     SizedBox(height: AppDimens.padding_2x),
 
-                    UserPlaceholder(width: width),
+                    user_placeholder(width: width),
                   ],
                 ),
               )

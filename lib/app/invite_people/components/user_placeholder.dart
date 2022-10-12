@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 
-class UserPlaceholder extends StatefulWidget {
-  UserPlaceholder({
+class user_placeholder extends StatefulWidget {
+  user_placeholder({
     Key? key,
     required this.width,
   }) : super(key: key);
@@ -12,10 +12,10 @@ class UserPlaceholder extends StatefulWidget {
   final double width;
 
   @override
-  State<UserPlaceholder> createState() => _UserPlaceholderState();
+  State<user_placeholder> createState() => _user_placeholderState();
 }
 
-class _UserPlaceholderState extends State<UserPlaceholder> {
+class _user_placeholderState extends State<user_placeholder> {
   bool pressed = false;
 
   @override
