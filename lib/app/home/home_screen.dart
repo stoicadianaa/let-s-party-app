@@ -9,6 +9,8 @@ import 'package:lets_party/core/model/party_model.dart';
 import 'package:lets_party/gen/fonts.gen.dart';
 import 'package:provider/provider.dart';
 
+import '../party_host/party_host_screen.dart';
+
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
@@ -143,7 +145,7 @@ class MyHomePage extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              PartyInvited(party.id!),
+                                              PartyHost(party.id!),
                                         ),
                                       );
                                     },
