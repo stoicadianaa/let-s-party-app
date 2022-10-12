@@ -4,6 +4,7 @@ import 'package:lets_party/app/components/input_field_widget.dart';
 import 'package:lets_party/app/create_your_party/TestScreen.dart';
 import 'package:lets_party/app/create_your_party/components/ImagePickingZone.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
+import 'package:lets_party/app/invite_people/invite_people_screen.dart';
 import 'package:lets_party/app/signup/signup_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
@@ -212,7 +213,7 @@ class CreatePartyScreen extends StatelessWidget {
             padding: const EdgeInsets.all(AppDimens.padding_2x),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(bloc: bloc)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => InvitePeopleScreen(createPartyBloc: bloc)));
               },
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(
