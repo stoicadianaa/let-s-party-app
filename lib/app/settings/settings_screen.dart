@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_party/app/edit_profile/edit_profile_screen.dart';
 import 'package:lets_party/app/login/login_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
@@ -37,7 +38,12 @@ class SettingsScreen extends StatelessWidget {
             children: [
               const Divider(),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfileScreen(),
+                  ),
+                ),
                 child: const SizedBox(
                   width: double.infinity,
                   child: Padding(
