@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_party/app/create_your_party/TestScreen.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
 import 'package:lets_party/app/invite_people/components/user_placeholder.dart';
 import 'package:lets_party/constants/app_colors.dart';
@@ -54,21 +56,74 @@ class InvitePeopleScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: AppDimens.padding_2x,
-                    horizontal: AppDimens.padding_2x),
+                    horizontal: AppDimens.padding_2x,
+                ),
                 child: Column(
                   children: [
-                    user_placeholder(width: width),
-                    SizedBox(height: AppDimens.padding_2x),
-                    user_placeholder(width: width),
-                    SizedBox(height: AppDimens.padding_2x),
-
-                    user_placeholder(width: width),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance.collection("users").snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          final snap = snapshot.data!.docs;
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: snap.length,
+                              itemBuilder: (context, index) {
+                              return Column(
+                                  children: [
+                                    user_placeholder(width: width, name: snap[index]['name'] as String),
+                                    SizedBox(height: AppDimens.padding_2x,)
+                                ]
+                              );
+                              }
+                          );
+                        } else {
+                          return SizedBox();
+                        }
+                        }
+                    ),
                   ],
                 ),
-              )
+                // child: Column(
+                //   children: [
+                //     user_placeholder(width: width, name: "Steven",),
+                //     SizedBox(height: AppDimens.padding_2x),
+                //     user_placeholder(width: width, name: "Marian",),
+                //     SizedBox(height: AppDimens.padding_2x),
+                //
+                //     user_placeholder(width: width, name: "Vlad",),
+                //   ],
+                ),
             ],
           ),
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(AppDimens.padding_2x),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(bloc: createPartyBloc)));
+            },
+            style: ButtonStyle(
+              fixedSize: MaterialStateProperty.all(
+                Size(
+                  MediaQuery.of(context).size.width,
+                  55,
+                ),
+              ),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100.0),
+                ),
+              ),
+            ),
+            child: const Text("Next: What is needed", style: TextStyle(
+              fontSize: 20,
+            ),),
+          ),
+        ),
+        floatingActionButtonLocation:
+        FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

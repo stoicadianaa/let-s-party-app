@@ -88,6 +88,25 @@ class RealtimeDatabaseService {
     return party;
   }
 
+  Future<List<UserModel>> getAllUsers() async {
+    List<UserModel> allUsersList = <UserModel>[];
+    final usersList = await FirebaseFirestore.instance
+        .collection("users")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        UserModel userModel = UserModel.allFields(
+          doc['name'] as String,
+          doc.id as String,
+          doc['birthday'] as String,
+        );
+        allUsersList.add(userModel);
+      });
+      return allUsersList;
+    });
+    return allUsersList;
+  }
+
   // Future<void> getUserFromFirebase(String email) async {
   //   var data = FirebaseFirestore.instance.doc("user/$email").get().then((value) {
   //     return value;

@@ -7,9 +7,11 @@ class user_placeholder extends StatefulWidget {
   user_placeholder({
     Key? key,
     required this.width,
+    required this.name,
   }) : super(key: key);
 
   final double width;
+  final String name;
 
   @override
   State<user_placeholder> createState() => _user_placeholderState();
@@ -22,21 +24,27 @@ class _user_placeholderState extends State<user_placeholder> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(
-          backgroundColor: gamboge,
-          radius: widget.width * 0.065,
+        SizedBox(
+          width: widget.width * 0.150,
           child: CircleAvatar(
-            radius: widget.width * 0.055,
-            backgroundImage: NetworkImage(
-                'https://www.giantbomb.com/a/uploads/scale_medium/1/14876/3065098-7871971516-4rstn.jpg'),
+            backgroundColor: gamboge,
+            radius: widget.width * 0.065,
+            child: CircleAvatar(
+              radius: widget.width * 0.055,
+              backgroundImage: NetworkImage(
+                  'https://www.giantbomb.com/a/uploads/scale_medium/1/14876/3065098-7871971516-4rstn.jpg'),
+            ),
           ),
         ),
         const SizedBox(
           width: AppDimens.padding_2x,
         ),
-        Text(
-          "Somebodys Name",
-          style: TextStyle(fontSize: widget.width * 0.050),
+        SizedBox(
+          width: widget.width * 0.45,
+          child: Text(
+            widget.name,
+            style: TextStyle(fontSize: widget.width * 0.050),
+          ),
         ),
         const SizedBox(
           width: AppDimens.padding_4x,
