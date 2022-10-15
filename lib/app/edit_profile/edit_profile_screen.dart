@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/components/input_field_widget.dart';
 import 'package:lets_party/app/edit_profile/edit_profile_bloc.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/constants/app_styles.dart';
-import 'package:lets_party/core/service/realtime_database_service.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -64,7 +62,13 @@ class EditProfileScreen extends StatelessWidget {
                     TextButton(
                       onPressed: () async {
                         await bloc.pickImage();
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfileScreen()));
+                        Future.delayed(
+                            const Duration(seconds: 1),
+                            () => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditProfileScreen(),),),);
                       },
                       child: Text(
                         "Change your profile picture",
@@ -82,7 +86,6 @@ class EditProfileScreen extends StatelessWidget {
                               hintText: "Name",
                               onChanged: (val) {
                                 _name = val;
-                                print(_name);
                               },
                               validator: (name) {
                                 if (name == '') {
@@ -100,13 +103,13 @@ class EditProfileScreen extends StatelessWidget {
                               hintText: "Password",
                               onChanged: (val) {
                                 _password1 = val;
-                                print("password1: $_password1");
                               },
                               validator: (password) {
-                                if (password == '')
+                                if (password == '') {
                                   return "The password is empty";
-                                else
+                                } else {
                                   return null;
+                                }
                               },
                               obscureText: !bloc.visiblePassword,
                               textInputAction: TextInputAction.done,
@@ -151,13 +154,13 @@ class EditProfileScreen extends StatelessWidget {
           ),
           child: ElevatedButton(
             onPressed: () async {
-              bool isValidated = _editProfileKey.currentState!.validate();
+              final bool isValidated = _editProfileKey.currentState!.validate();
               if (isValidated) {
                 try {
-                  await EditProfileBloc.changeUserNameAndPassword( _password1!,
+                  await EditProfileBloc.changeUserNameAndPassword(
+                    _password1!,
                     _name!,
                   );
-                  print("here2");
                   Navigator.pop(context);
                 } catch (e) {
                   ScaffoldMessenger.of(context)

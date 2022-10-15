@@ -56,11 +56,11 @@ class EditProfileBloc extends ChangeNotifier {
   }
 
   static Future<void> changeUserNameAndPassword(String newPassword, String newName) async {
-    final RealtimeDatabaseService _service = RealtimeDatabaseService();
-    var user = FirebaseAuth.instance.currentUser;
+    final RealtimeDatabaseService service = RealtimeDatabaseService();
+    final user = FirebaseAuth.instance.currentUser;
     try {
       user!.updatePassword(newPassword);
-      _service.updateUserName(newName, user.email!);
+      service.updateUserName(newName, user.email!);
     } catch (e) {
       rethrow;
     }
