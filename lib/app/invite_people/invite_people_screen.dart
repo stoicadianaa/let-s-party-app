@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lets_party/app/create_your_party/TestScreen.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
 import 'package:lets_party/app/invite_people/components/user_placeholder.dart';
+import 'package:lets_party/app/what_is_needed/what_is_needed_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/core/model/user_model.dart';
@@ -107,13 +107,12 @@ class InvitePeopleScreen extends StatelessWidget {
           padding: const EdgeInsets.all(AppDimens.padding_2x),
           child: ElevatedButton(
             onPressed: () {
-              for (UserModel user in listOfInvitedUsers) {
-                print(user.name);
-              }
+              createPartyBloc.invitedPeople = listOfInvitedUsers;
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TestScreen(bloc: createPartyBloc)));
+                      builder: (context) => WhatIsNeeded(createPartyBloc: createPartyBloc)
+              ));
             },
             style: ButtonStyle(
               fixedSize: MaterialStateProperty.all(

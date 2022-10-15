@@ -47,7 +47,7 @@ class _ItemsPageState extends State<ItemsPage> {
                 child: ListView.builder(
                   itemCount: bloc.listOfCategories.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return CategoryWidget(bloc.listOfCategories[index]);
+                    return CategoryWidget(category: bloc.listOfCategories[index], enableItemSelect: false,);
                   },
                 ),
               );
