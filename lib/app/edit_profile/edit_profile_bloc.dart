@@ -39,6 +39,7 @@ class EditProfileBloc extends ChangeNotifier {
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
+    notifyListeners();
   }
 
   Future<void> loadScreen() async {
@@ -46,6 +47,11 @@ class EditProfileBloc extends ChangeNotifier {
     user = await _service.getUserFromFirebase(email);
     profilePicture = await RealtimeDatabaseService.getProfileImage(email);
     isLoadingDone = true;
+    notifyListeners();
+  }
+
+  Future<void> loadProfileImage() async {
+    profilePicture = await RealtimeDatabaseService.getProfileImage(user.email!);
     notifyListeners();
   }
 

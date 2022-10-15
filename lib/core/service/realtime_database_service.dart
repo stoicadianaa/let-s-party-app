@@ -100,13 +100,13 @@ class RealtimeDatabaseService {
   }
 
   static Future<String> getProfileImage(String email) async {
-    String imageURL;
-
+    String imageURL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
     final storageRef = FirebaseStorage.instance.ref();
-    final imageStorageRef = storageRef.child("profile_photos/$email.jpeg");
+    final bool hasImage = (await storageRef.child("profile_photos/").listAll()).items.toString().contains(email);
 
-    imageURL = await imageStorageRef
-        .getDownloadURL();
+    if(hasImage) {
+      imageURL = await storageRef.child("profile_photos/$email.jpeg").getDownloadURL();
+    }
 
     return imageURL;
   }
@@ -116,8 +116,6 @@ class RealtimeDatabaseService {
     final imageStorageRef = storageRef.child("profile_photos/$email.jpeg");
 
     imageStorageRef.putFile(file);
-
-    //String imageURL=  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
   }
 
   Future<String?> updateUserName(String name, String email) async {

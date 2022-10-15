@@ -5,6 +5,7 @@ import 'package:lets_party/app/edit_profile/edit_profile_bloc.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/constants/app_styles.dart';
+import 'package:lets_party/core/service/realtime_database_service.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -41,7 +42,7 @@ class EditProfileScreen extends StatelessWidget {
                           height: 200.0,
                         ),
                         Positioned(
-                          top: 100.0,
+                          top: 70.0,
                           left: screenWidth / 4,
                           child: Container(
                             height: screenWidth / 2,
@@ -63,6 +64,7 @@ class EditProfileScreen extends StatelessWidget {
                     TextButton(
                       onPressed: () async {
                         await bloc.pickImage();
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProfileScreen()));
                       },
                       child: Text(
                         "Change your profile picture",
@@ -152,7 +154,6 @@ class EditProfileScreen extends StatelessWidget {
               bool isValidated = _editProfileKey.currentState!.validate();
               if (isValidated) {
                 try {
-                  print("here: $_name");
                   await EditProfileBloc.changeUserNameAndPassword( _password1!,
                     _name!,
                   );
