@@ -5,17 +5,20 @@ import 'package:lets_party/app/create_your_party/components/create_party_bloc.da
 import 'package:lets_party/app/invite_people/components/user_placeholder.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
+import 'package:lets_party/core/model/user_model.dart';
+import 'package:lets_party/core/service/realtime_database_service.dart';
 import 'package:lets_party/gen/fonts.gen.dart';
 
 class InvitePeopleScreen extends StatelessWidget {
   CreatePartyBloc createPartyBloc;
+  List<UserModel> listOfInvitedUsers = [];
 
   InvitePeopleScreen({required this.createPartyBloc});
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -43,66 +46,74 @@ class InvitePeopleScreen extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Center(
-                child: Text(
-                  "total invited: 5",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
+        body: Column(
+          children: [
+            const Center(
+              child: Text(
+                "total invited: 5",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: AppDimens.padding_2x,
-                    horizontal: AppDimens.padding_2x,
-                ),
-                child: Column(
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection("users").snapshots(),
-                        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppDimens.padding_2x,
+                horizontal: AppDimens.padding_2x,
+              ),
+              child: Column(
+                children: [
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection("users")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasData) {
                           final snap = snapshot.data!.docs;
-                          return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: snap.length,
-                              itemBuilder: (context, index) {
-                              return Column(
-                                  children: [
-                                    user_placeholder(width: width, name: snap[index]['name'] as String),
-                                    SizedBox(height: AppDimens.padding_2x,)
-                                ]
-                              );
-                              }
+                          return SizedBox(
+                            height: height*0.75,
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: snap.length,
+                                itemBuilder: (context, index) {
+                                  return Column(children: [
+                                    user_placeholder(
+                                      width: width,
+                                      email: snap[index].id,
+                                      name: snap[index]['name'] as String,
+                                      onInvitePressed: () {
+                                        listOfInvitedUsers.add(UserModel.allFields(
+                                            snap[index]["name"] as String,
+                                            snap[index].id,
+                                            snap[index]["birthday"] as String));
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: AppDimens.padding_2x,
+                                    )
+                                  ]);
+                                }),
                           );
                         } else {
                           return SizedBox();
                         }
-                        }
-                    ),
-                  ],
-                ),
-                // child: Column(
-                //   children: [
-                //     user_placeholder(width: width, name: "Steven",),
-                //     SizedBox(height: AppDimens.padding_2x),
-                //     user_placeholder(width: width, name: "Marian",),
-                //     SizedBox(height: AppDimens.padding_2x),
-                //
-                //     user_placeholder(width: width, name: "Vlad",),
-                //   ],
-                ),
-            ],
-          ),
+                      }),
+                ],
+              ),
+            ),
+          ],
         ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(AppDimens.padding_2x),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(bloc: createPartyBloc)));
+              for (UserModel user in listOfInvitedUsers) {
+                print(user.name);
+              }
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TestScreen(bloc: createPartyBloc)));
             },
             style: ButtonStyle(
               fixedSize: MaterialStateProperty.all(
@@ -117,16 +128,16 @@ class InvitePeopleScreen extends StatelessWidget {
                 ),
               ),
             ),
-            child: const Text("Next: What is needed", style: TextStyle(
-              fontSize: 20,
-            ),),
+            child: const Text(
+              "Next: What is needed",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
           ),
         ),
-        floatingActionButtonLocation:
-        FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
 }
-
-

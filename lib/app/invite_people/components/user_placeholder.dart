@@ -1,17 +1,24 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
+import 'package:lets_party/core/service/realtime_database_service.dart';
 
 class user_placeholder extends StatefulWidget {
   user_placeholder({
     Key? key,
     required this.width,
     required this.name,
+    required this.email,
+    required this.onInvitePressed,
   }) : super(key: key);
 
   final double width;
   final String name;
+  final String email;
+  final VoidCallback onInvitePressed;
 
   @override
   State<user_placeholder> createState() => _user_placeholderState();
@@ -19,6 +26,18 @@ class user_placeholder extends StatefulWidget {
 
 class _user_placeholderState extends State<user_placeholder> {
   bool pressed = false;
+  String imageURL = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+
+  @override
+  void initState() {
+    super.initState();
+    setImageUrl();
+  }
+
+  Future<void> setImageUrl () async {
+    imageURL = await RealtimeDatabaseService.getProfileImage(widget.email);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +51,7 @@ class _user_placeholderState extends State<user_placeholder> {
             child: CircleAvatar(
               radius: widget.width * 0.055,
               backgroundImage: NetworkImage(
-                  'https://www.giantbomb.com/a/uploads/scale_medium/1/14876/3065098-7871971516-4rstn.jpg'),
+                  imageURL == null ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' : imageURL),
             ),
           ),
         ),
@@ -53,6 +72,7 @@ class _user_placeholderState extends State<user_placeholder> {
           child: Center(
             child: OutlinedButton(
               onPressed: () {
+                widget.onInvitePressed.call();
                 setState(() {
                   pressed = true;
                 });
