@@ -118,6 +118,43 @@ class RealtimeDatabaseService {
     imageStorageRef.putFile(file);
   }
 
+  Future<List<UserModel>> getAllUsers() async {
+    List<UserModel> allUsersList = <UserModel>[];
+    final usersList = await FirebaseFirestore.instance
+        .collection("users")
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        UserModel userModel = UserModel.allFields(
+          doc['name'] as String,
+          doc.id as String,
+          doc['birthday'] as String,
+        );
+        allUsersList.add(userModel);
+      });
+      return allUsersList;
+    });
+    return allUsersList;
+  }
+
+  static Future<String> getProfileImage(String email) async {
+    String imageURL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+    final storageRef = FirebaseStorage.instance.ref();
+    final bool hasImage = (await storageRef.child("profile_photos/").listAll()).items.toString().contains(email);
+
+    if(hasImage) {
+      imageURL = await storageRef.child("profile_photos/$email.jpeg").getDownloadURL();
+    }
+
+    return imageURL;
+  }
+
+  // Future<void> getUserFromFirebase(String email) async {
+  //   var data = FirebaseFirestore.instance.doc("user/$email").get().then((value) {
+  //     return value;
+  //   });
+  // }
+
   Future<String?> updateUserName(String name, String email) async {
     try {
       FirebaseFirestore.instance
@@ -129,4 +166,5 @@ class RealtimeDatabaseService {
     }
     return null;
   }
+
 }

@@ -12,6 +12,9 @@ import 'package:lets_party/core/service/realtime_database_service.dart';
 class CreatePartyBloc extends ChangeNotifier {
   PartyModel partyModel = PartyModel(null, null, null, null, null, null, null, null);
   String? imageFile;
+  Map<String, int> whatIsNeeded = Map();
+  List<UserModel> invitedPeople = [];
+  String tags = "";
 
   static String getDateFormatted(DateTime date) =>
       "${date.year.toString()}-${date.month.toString()}-${date.day.toString()}";

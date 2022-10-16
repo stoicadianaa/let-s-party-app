@@ -13,11 +13,7 @@ class TestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Image(
-        image: FileImage(
-          File(bloc.imageFile!)
-        ),
-      ),
+      child: Container()
     );
   }
 }

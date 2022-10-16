@@ -4,6 +4,7 @@ import 'package:lets_party/app/components/input_field_widget.dart';
 import 'package:lets_party/app/create_your_party/TestScreen.dart';
 import 'package:lets_party/app/create_your_party/components/ImagePickingZone.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
+import 'package:lets_party/app/invite_people/invite_people_screen.dart';
 import 'package:lets_party/app/signup/signup_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
@@ -55,6 +56,33 @@ class CreatePartyScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ImagePickingZone(bloc: bloc,),
+                  const SizedBox(
+                    height: AppDimens.padding_2x,
+                  ),
+                  const Text(
+                    "Name",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: AppDimens.padding,
+                  ),
+                  InputField(
+                    hintText: "Give your party a name",
+                    onChanged: (val) {
+                      bloc.partyModel.name = val;
+                    },
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (description) {
+                      if (description != null && description != '') {
+                        return null;
+                      }
+                      return "Invalid description";
+                    },
+                  ),
                   const SizedBox(
                     height: AppDimens.padding_2x,
                   ),
@@ -163,7 +191,7 @@ class CreatePartyScreen extends StatelessWidget {
                   InputField(
                     hintText: "Enter the party's location",
                     onChanged: (val) {
-                      bloc.partyModel.description = val;
+                      bloc.partyModel.where = val;
                     },
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
@@ -190,7 +218,9 @@ class CreatePartyScreen extends StatelessWidget {
                   InputField(
                     hintText: "Separate tags with commas",
                     onChanged: (val) {
-                      bloc.partyModel.description = val;
+                      if (val != null) {
+                        bloc.tags = val;
+                      }
                     },
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
@@ -202,7 +232,10 @@ class CreatePartyScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(
-                    height: AppDimens.padding_2x,
+                    height: AppDimens.padding_4x,
+                  ),
+                  const SizedBox(
+                    height: AppDimens.padding_4x,
                   ),
                 ],
               ),
@@ -212,7 +245,7 @@ class CreatePartyScreen extends StatelessWidget {
             padding: const EdgeInsets.all(AppDimens.padding_2x),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(bloc: bloc)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => InvitePeopleScreen(createPartyBloc: bloc)));
               },
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(
