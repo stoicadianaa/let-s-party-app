@@ -9,6 +9,8 @@ import 'package:lets_party/core/model/party_model.dart';
 import 'package:lets_party/gen/fonts.gen.dart';
 import 'package:provider/provider.dart';
 
+import '../party_host/party_host_screen.dart';
+
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
@@ -25,7 +27,7 @@ class MyHomePage extends StatelessWidget {
             leadingWidth: 100.0,
             toolbarHeight: 80.0,
             leading: TextButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pop(context),
               child: const Text(
                 "Back",
                 style: TextStyle(
@@ -90,7 +92,9 @@ class MyHomePage extends StatelessWidget {
                                     .length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  PartyModel party = homeScreenBloc.listOfParties['possible'][index] as PartyModel;
+                                  final PartyModel party =
+                                      homeScreenBloc.listOfParties['possible']
+                                          [index] as PartyModel;
                                   return PartyButton(
                                     image: party.pictureLink!,
                                     name: party.name!,
@@ -98,7 +102,8 @@ class MyHomePage extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (BuildContext context) =>  PartyInvited(party.id!),
+                                          builder: (BuildContext context) =>
+                                              PartyInvited(party.id!),
                                         ),
                                       );
                                     },
@@ -129,8 +134,9 @@ class MyHomePage extends StatelessWidget {
                                     .length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  PartyModel party = homeScreenBloc.listOfParties['hosted']
-                                  [index] as PartyModel;
+                                  final PartyModel party =
+                                      homeScreenBloc.listOfParties['hosted']
+                                          [index] as PartyModel;
                                   return PartyButton(
                                     image: party.pictureLink!,
                                     name: party.name!,
@@ -138,7 +144,8 @@ class MyHomePage extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (BuildContext context) =>  PartyInvited(party.id!),
+                                          builder: (BuildContext context) =>
+                                              PartyHost(party.id!),
                                         ),
                                       );
                                     },

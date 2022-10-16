@@ -8,8 +8,9 @@ import '../../constants/app_colors.dart';
 
 class PartyDescription extends StatelessWidget with StringMixins {
   final PartyModel party;
+  final String hostName;
 
-  PartyDescription(this.party);
+  PartyDescription(this.party, this.hostName);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class PartyDescription extends StatelessWidget with StringMixins {
           width: double.infinity,
           alignment: Alignment.center,
           child: Text(
-            party.hostEmail == null ? "Unknown host" : "Party hosted by ${party.hostEmail}",
+            party.hostEmail == null ? "Unknown host" : "Party hosted by $hostName",
             textAlign: TextAlign.center,
             style: AppStyles.bodyStyle,
           ),

@@ -12,7 +12,7 @@ class SignUpBloc extends ChangeNotifier with StringMixins {
   final RealtimeDatabaseService _databaseService = RealtimeDatabaseService();
   final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
 
-  Future<String> createAccount(BuildContext context) async {
+  Future<String?> createAccount(BuildContext context) async {
     String? message;
     try {
       message = await _firebaseAuthService.createAccount(userModel.email, password);
@@ -20,7 +20,7 @@ class SignUpBloc extends ChangeNotifier with StringMixins {
     } on FirebaseAuthException catch (ex) {
       message = "${ex.code}: ${ex.message}";
     }
-    return message ?? "Authentication successful";
+    return message;
   }
 
   void changePasswordVisibility() {

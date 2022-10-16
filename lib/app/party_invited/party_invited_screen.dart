@@ -41,7 +41,7 @@ class PartyInvited extends StatelessWidget with StringMixins {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              PartyDescription(partyBloc.party!),
+                              PartyDescription(partyBloc.party!, partyBloc.hostName ?? "Unknown host"),
                               const SizedBox(
                                 height: AppDimens.padding_3x,
                               ),

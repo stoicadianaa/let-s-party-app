@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/components/input_field_widget.dart';
+import 'package:lets_party/app/home/home_screen.dart';
 import 'package:lets_party/app/login/login_bloc.dart';
 import 'package:lets_party/app/signup/signup_screen.dart';
 import 'package:lets_party/constants/app_dimens.dart';
@@ -11,12 +12,11 @@ class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String? _email;
   String? _password;
-  LoginBloc bloc = LoginBloc();
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => bloc,
+      create: (context) => LoginBloc(),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -30,15 +30,15 @@ class LoginScreen extends StatelessWidget {
             toolbarHeight: 80.0,
             actions: [
               TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => SignUpScreen(),
-                      ),
-                    );
-                  },
-                  child: Text("Sign Up".i18n()),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => SignUpScreen(),
+                    ),
+                  );
+                },
+                child: Text("Sign Up".i18n()),
               )
             ],
           ),
@@ -65,23 +65,23 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: AppDimens.padding_2x,
                   ),
-                  InputField(
-                    hintText: "Password".i18n(),
-                    onChanged: (val) {
-                      _password = val;
-                    },
-                    validator: (password) {
-                      if (password == null || password.isEmpty) {
-                        return "Empty password";
-                      }
-                      return null;
-                    },
-                    obscureText: !bloc.visiblePassword,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.visiblePassword,
-                    suffixIcon: Consumer<LoginBloc>(
-                      builder: (context, bloc, child) {
-                        return TextButton(
+                  Consumer<LoginBloc>(
+                    builder: (context, bloc, child) {
+                      return InputField(
+                        hintText: "Password".i18n(),
+                        onChanged: (val) {
+                          _password = val;
+                        },
+                        validator: (password) {
+                          if (password == null || password.isEmpty) {
+                            return "Empty password";
+                          }
+                          return null;
+                        },
+                        obscureText: !bloc.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.visiblePassword,
+                        suffixIcon: TextButton(
                           onPressed: () => bloc.changePasswordVisibility(),
                           child: Text(
                             bloc.visiblePassword ? "Hide" : "Show",
@@ -89,9 +89,9 @@ class LoginScreen extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -99,24 +99,40 @@ class LoginScreen extends StatelessWidget {
           ),
           floatingActionButton: Padding(
             padding: const EdgeInsets.all(AppDimens.padding_2x),
-            child: ElevatedButton(
-              onPressed: () => bloc.login(context, _email, _password),
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(
-                  Size(
-                    MediaQuery.of(context).size.width,
-                    55,
+            child: Consumer<LoginBloc>(
+              builder: (context, bloc, child) => ElevatedButton(
+                onPressed: () async {
+                  final bool loginSuccessful =
+                      await bloc.login(context, _email, _password);
+                  if (loginSuccessful) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MyHomePage(),
+                      ),
+                    );
+                  }
+                },
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(
+                    Size(
+                      MediaQuery.of(context).size.width,
+                      55,
+                    ),
+                  ),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100.0),
+                    ),
                   ),
                 ),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100.0),
+                child: const Text(
+                  "Log in",
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
                 ),
               ),
-              child: const Text("Log in", style: TextStyle(
-                fontSize: 20
-              ),),
             ),
           ),
           floatingActionButtonLocation:

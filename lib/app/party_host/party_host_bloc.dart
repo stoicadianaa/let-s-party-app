@@ -1,24 +1,22 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lets_party/core/model/party_invites_model.dart';
 import 'package:lets_party/core/model/party_model.dart';
 import 'package:lets_party/core/service/realtime_database_service.dart';
 
-class PartyInvitedBloc extends ChangeNotifier {
+class PartyHostBloc extends ChangeNotifier {
   PartyModel? party;
   String? hostName;
+  PartyGuests? partyGuests;
   final RealtimeDatabaseService _service = RealtimeDatabaseService();
 
-  PartyInvitedBloc(String partyID) {
+  PartyHostBloc(String partyID) {
     loadParty(partyID);
   }
 
   Future<void> loadParty(String partyID) async {
-    try {
       party = await _service.getPartyDetails(partyID);
       hostName = (await _service.getUserFromFirebase(party!.hostEmail!)).name;
-    } on Exception {
-      // TODO
-    }
-    notifyListeners();
+      partyGuests = await _service.getPartyGuests(partyID);
+      notifyListeners();
   }
-
 }

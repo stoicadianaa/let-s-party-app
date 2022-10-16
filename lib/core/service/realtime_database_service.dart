@@ -1,9 +1,10 @@
-import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:lets_party/core/model/categories_model.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lets_party/core/model/party_invites_model.dart';
 import 'package:lets_party/core/model/party_model.dart';
 import 'package:lets_party/core/model/user_model.dart';
 
@@ -13,26 +14,24 @@ class RealtimeDatabaseService {
   List<PartyModel> listOfPossibleParties = [];
   List<PartyModel> listOfHostedParties = [];
   bool loadingDone = false;
-  String currentUser = "stevenBoss@gmail.com";
 
   Future<String?> setUserInfo(UserModel user) async {
-    final DatabaseReference usersRef = FirebaseDatabase.instance
-        .ref("users/${user.email!.replaceAll(".", "")}");
     try {
-      if (user.birthday == null) return "Empty date";
-      if (user.name == null) return "Empty name";
-      await usersRef.set(user.toJson());
-      return null;
-    } catch (ex) {
-      return ex.toString();
+      FirebaseFirestore.instance
+          .collection("users/")
+          .doc(user.email)
+          .set({"name": user.name, "birthday": user.birthday});
+    } on Exception catch (e) {
+      return e.toString();
     }
+    return null;
   }
 
   Future<void> getCategories() async {
     final ref = FirebaseDatabase.instance.ref("categories/");
     final event = await ref.once();
     final Map<String, dynamic> categories =
-        Map<String, dynamic>.from(event.snapshot.value as Map);
+        Map<String, dynamic>.from(event.snapshot.value! as Map);
     for (final category in categories["listOfCategories"] as List) {
       listOfCategories.add(
         CategoriesModel.fromMap(category as Map),
@@ -42,13 +41,12 @@ class RealtimeDatabaseService {
   }
 
   Future<Map> getAllParties() async {
-    print('printeaza ma ceva');
     final reference = await FirebaseFirestore.instance
         .collection('parties')
         .get()
         .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        PartyModel partyModel = PartyModel(
+      for (final doc in querySnapshot.docs) {
+        final PartyModel partyModel = PartyModel(
           doc['description'] as String,
           doc['name'] as String,
           doc['pictureLink'] as String,
@@ -57,14 +55,14 @@ class RealtimeDatabaseService {
           DateTime.tryParse(doc['when'] as String),
           doc['where'] as String,
           (doc['tags'] as String).split(","),
-          id: doc.id
+          id: doc.id,
         );
         if (partyModel.isHostedByCurrentUser()) {
           listOfHostedParties.add(partyModel);
         } else {
           listOfPossibleParties.add(partyModel);
         }
-      });
+      }
       final Map mapWithHostedAndPossibleParties = {};
       mapWithHostedAndPossibleParties['hosted'] = listOfHostedParties;
       mapWithHostedAndPossibleParties['possible'] = listOfPossibleParties;
@@ -75,18 +73,49 @@ class RealtimeDatabaseService {
   }
 
   Future<PartyModel> getPartyDetails(String partyID) async {
-    PartyModel party;
-    final firestoreDoc = await FirebaseFirestore.instance.collection("parties").doc(partyID).get();
+    final firestoreDoc = await FirebaseFirestore.instance
+        .collection("parties")
+        .doc(partyID)
+        .get();
 
-    // final ref = FirebaseDatabase.instance.ref("parties/0");
-    // final event = await ref.once();
-    // final Map<String, dynamic> json =
-    // Map<String, dynamic>.from(event.snapshot.value as Map);
-    // party = PartyModel.fromMap(json);
+    return PartyModel.fromQueryDocumentSnapshot(firestoreDoc);
+  }
 
-    party = PartyModel.fromQueryDocumentSnapshot(firestoreDoc);
+  Future<UserModel> getUserFromFirebase(String email) async {
+    final firestoreDoc =
+        await FirebaseFirestore.instance.doc("users/$email").get();
+    return UserModel.fromQueryDocumentSnapshot(firestoreDoc, email);
+  }
 
-    return party;
+  Future<PartyGuests> getPartyGuests(String partyID) async {
+    final firestoreDoc = await FirebaseFirestore.instance
+        .collection("parties/")
+        .doc(partyID)
+        .get();
+
+    final PartyGuests partyGuests =
+        await PartyGuests.fromQueryDocumentSnapshot(firestoreDoc);
+
+    return partyGuests;
+  }
+
+  static Future<String> getProfileImage(String email) async {
+    String imageURL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+    final storageRef = FirebaseStorage.instance.ref();
+    final bool hasImage = (await storageRef.child("profile_photos/").listAll()).items.toString().contains(email);
+
+    if(hasImage) {
+      imageURL = await storageRef.child("profile_photos/$email.jpeg").getDownloadURL();
+    }
+
+    return imageURL;
+  }
+
+  Future<void> setProfileImage(String email, File file) async {
+    final storageRef = FirebaseStorage.instance.ref();
+    final imageStorageRef = storageRef.child("profile_photos/$email.jpeg");
+
+    imageStorageRef.putFile(file);
   }
 
   Future<List<UserModel>> getAllUsers() async {
@@ -125,4 +154,17 @@ class RealtimeDatabaseService {
   //     return value;
   //   });
   // }
+
+  Future<String?> updateUserName(String name, String email) async {
+    try {
+      FirebaseFirestore.instance
+          .collection("users/")
+          .doc(email)
+          .update({"name": name});
+    } on Exception catch (e) {
+      return e.toString();
+    }
+    return null;
+  }
+
 }
