@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/components/category_widget.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
@@ -6,6 +11,7 @@ import 'package:lets_party/app/everything_is_ready/everything_is_ready_screen.da
 import 'package:lets_party/app/items_page/items_page_bloc.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/constants/app_styles.dart';
+import 'package:lets_party/core/model/user_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/app_colors.dart';
@@ -80,11 +86,38 @@ class _WhatIsNeededState extends State<WhatIsNeeded> {
           floatingActionButton: Padding(
             padding: const EdgeInsets.all(AppDimens.padding_2x),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 for (String i in widget.createPartyBloc.whatIsNeeded.keys) {
                   print(i);
                   print(widget.createPartyBloc.whatIsNeeded[i]);
                 }
+                Map<String, dynamic> createPartyRequest = Map<String, dynamic>();
+                createPartyRequest["name"] = widget.createPartyBloc.partyModel.name;
+                createPartyRequest["description"] = widget.createPartyBloc.partyModel.description;
+                createPartyRequest["hostEmail"] = FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.email : "somebody@mail.com";
+                Map<String, String> invitedPeople = Map();
+                for (var userModel in widget.createPartyBloc.invitedPeople) {
+                  invitedPeople[userModel.email!] = "invited";
+                }
+                createPartyRequest["invitedPeople"] = invitedPeople;
+                String? imagePath = widget.createPartyBloc.imageFile;
+
+                final storageRef = FirebaseStorage.instance.ref();
+                final partyImageRef = storageRef.child("party_image/${widget.createPartyBloc.partyModel.name}");
+
+                if (imagePath != null) {
+                  String url = await uploadFile(imagePath, partyImageRef);
+                  createPartyRequest["pictureLink"] = url;
+                }
+
+                createPartyRequest["rsvp"] = widget.createPartyBloc.partyModel.rsvp.toString();
+                createPartyRequest["tags"] = widget.createPartyBloc.tags;
+                createPartyRequest["when"] = widget.createPartyBloc.partyModel.when.toString();
+                createPartyRequest["where"] = widget.createPartyBloc.partyModel.where;
+                createPartyRequest["needed"] = widget.createPartyBloc.whatIsNeeded;
+
+                FirebaseFirestore.instance.collection("parties").add(createPartyRequest);
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -116,5 +149,12 @@ class _WhatIsNeededState extends State<WhatIsNeeded> {
         ),
         ),
     );
+  }
+
+  Future<String> uploadFile(String imagePath, Reference partyImageRef) async {
+    File image = File(imagePath);
+    await partyImageRef.putFile(image);
+    String url = await partyImageRef.getDownloadURL();
+    return url;
   }
 }

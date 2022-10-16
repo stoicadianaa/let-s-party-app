@@ -14,6 +14,7 @@ class CreatePartyBloc extends ChangeNotifier {
   String? imageFile;
   Map<String, int> whatIsNeeded = Map();
   List<UserModel> invitedPeople = [];
+  String tags = "";
 
   static String getDateFormatted(DateTime date) =>
       "${date.year.toString()}-${date.month.toString()}-${date.day.toString()}";

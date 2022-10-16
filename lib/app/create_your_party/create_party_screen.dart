@@ -191,7 +191,7 @@ class CreatePartyScreen extends StatelessWidget {
                   InputField(
                     hintText: "Enter the party's location",
                     onChanged: (val) {
-                      bloc.partyModel.description = val;
+                      bloc.partyModel.where = val;
                     },
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
@@ -218,7 +218,9 @@ class CreatePartyScreen extends StatelessWidget {
                   InputField(
                     hintText: "Separate tags with commas",
                     onChanged: (val) {
-                      bloc.partyModel.description = val;
+                      if (val != null) {
+                        bloc.tags = val;
+                      }
                     },
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
