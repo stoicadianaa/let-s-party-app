@@ -34,6 +34,7 @@ class _SelectItemCountState extends State<SelectItemCount> {
     if (!buttonPressed) {
       if (widget.createPartyBloc.whatIsNeeded[widget.itemModel.name] != null) {
         itemCount = widget.createPartyBloc.whatIsNeeded[widget.itemModel.name]!;
+        total = itemCount * widget.itemModel.price;
       }
     }
   }
