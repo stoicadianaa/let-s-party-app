@@ -60,6 +60,33 @@ class CreatePartyScreen extends StatelessWidget {
                     height: AppDimens.padding_2x,
                   ),
                   const Text(
+                    "Name",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: AppDimens.padding,
+                  ),
+                  InputField(
+                    hintText: "Give your party a name",
+                    onChanged: (val) {
+                      bloc.partyModel.name = val;
+                    },
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (description) {
+                      if (description != null && description != '') {
+                        return null;
+                      }
+                      return "Invalid description";
+                    },
+                  ),
+                  const SizedBox(
+                    height: AppDimens.padding_2x,
+                  ),
+                  const Text(
                     "How",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -203,7 +230,10 @@ class CreatePartyScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(
-                    height: AppDimens.padding_2x,
+                    height: AppDimens.padding_4x,
+                  ),
+                  const SizedBox(
+                    height: AppDimens.padding_4x,
                   ),
                 ],
               ),

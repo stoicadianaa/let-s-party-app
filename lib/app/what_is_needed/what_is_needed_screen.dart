@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/components/category_widget.dart';
 import 'package:lets_party/app/create_your_party/components/create_party_bloc.dart';
+import 'package:lets_party/app/everything_is_ready/everything_is_ready_screen.dart';
 
 import 'package:lets_party/app/items_page/items_page_bloc.dart';
 import 'package:lets_party/constants/app_dimens.dart';
@@ -84,11 +85,11 @@ class _WhatIsNeededState extends State<WhatIsNeeded> {
                   print(i);
                   print(widget.createPartyBloc.whatIsNeeded[i]);
                 }
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => WhatIsNeeded(createPartyBloc: createPartyBloc)
-                //     ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EverythingIsReadyScreen(createPartyBloc: widget.createPartyBloc,)
+                    ));
               },
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all(
@@ -104,7 +105,7 @@ class _WhatIsNeededState extends State<WhatIsNeeded> {
                 ),
               ),
               child: const Text(
-                "Next: What is needed",
+                "Finish your party",
                 style: TextStyle(
                   fontSize: 20,
                 ),
