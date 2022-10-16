@@ -99,7 +99,7 @@ class _WhatIsNeededState extends State<WhatIsNeeded> {
                 for (var userModel in widget.createPartyBloc.invitedPeople) {
                   invitedPeople[userModel.email!] = "invited";
                 }
-                createPartyRequest["invitedPeople"] = invitedPeople;
+                createPartyRequest["guests"] = invitedPeople;
                 String? imagePath = widget.createPartyBloc.imageFile;
 
                 final storageRef = FirebaseStorage.instance.ref();
