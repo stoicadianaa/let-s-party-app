@@ -141,7 +141,7 @@ class RealtimeDatabaseService {
     return null;
   }
 
-  Future<List<String>> getAllGoingParties() async {
+  Future<List<String>> getAllInvitesForUser() async {
     final email = FirebaseAuth.instance.currentUser!.email;
     final List<String> invitedPartiesIDs = [];
     await FirebaseFirestore.instance
@@ -150,8 +150,27 @@ class RealtimeDatabaseService {
         .then((QuerySnapshot querySnapshot) {
       for (final doc in querySnapshot.docs) {
         final partyInvitesInfo = doc['guests'].toString();
+        if (partyInvitesInfo.contains("$email: invited")) {
+          invitedPartiesIDs.add(doc.id);
+        }
+      }
+    });
+    return invitedPartiesIDs;
+  }
 
+
+  Future<List<String>> getAllGoingParties() async {
+
+    final email = FirebaseAuth.instance.currentUser!.email;
+    final List<String> invitedPartiesIDs = [];
+    await FirebaseFirestore.instance
+        .collection('parties')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (final doc in querySnapshot.docs) {
+        final partyInvitesInfo = doc['guests'].toString();
         if (partyInvitesInfo.contains("$email: going")) {
+
           invitedPartiesIDs.add(doc.id);
         }
       }
