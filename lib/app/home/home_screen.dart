@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:lets_party/app/home/components/home_menu.dart';
 import 'package:lets_party/app/home/components/party_button.dart';
 import 'package:lets_party/app/home/home_screen_bloc.dart';
+import 'package:lets_party/app/party_host/party_host_screen.dart';
 import 'package:lets_party/app/party_invited/party_invited_screen.dart';
 import 'package:lets_party/constants/app_colors.dart';
 import 'package:lets_party/constants/app_dimens.dart';
 import 'package:lets_party/core/model/party_model.dart';
 import 'package:lets_party/gen/fonts.gen.dart';
 import 'package:provider/provider.dart';
-
-import '../party_host/party_host_screen.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
