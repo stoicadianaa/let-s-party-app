@@ -11,13 +11,17 @@ class PartyInvitedBloc extends ChangeNotifier {
     loadParty(partyID);
   }
 
+  void setStatusToGoing() {
+    _service.setStatus(party!.id!, "going");
+  }
+
+  void setStatusToNotGoing() {
+    _service.setStatus(party!.id!, "not going");
+  }
+
   Future<void> loadParty(String partyID) async {
-    try {
-      party = await _service.getPartyDetails(partyID);
-      hostName = (await _service.getUserFromFirebase(party!.hostEmail!)).name;
-    } on Exception {
-      // TODO
-    }
+    party = await _service.getPartyDetails(partyID);
+    hostName = (await _service.getUserFromFirebase(party!.hostEmail!)).name;
     notifyListeners();
   }
 

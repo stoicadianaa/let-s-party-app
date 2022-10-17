@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:lets_party/core/model/categories_model.dart';
@@ -100,12 +101,17 @@ class RealtimeDatabaseService {
   }
 
   static Future<String> getProfileImage(String email) async {
-    String imageURL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+    String imageURL =
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
     final storageRef = FirebaseStorage.instance.ref();
-    final bool hasImage = (await storageRef.child("profile_photos/").listAll()).items.toString().contains(email);
+    final bool hasImage = (await storageRef.child("profile_photos/").listAll())
+        .items
+        .toString()
+        .contains(email);
 
-    if(hasImage) {
-      imageURL = await storageRef.child("profile_photos/$email.jpeg").getDownloadURL();
+    if (hasImage) {
+      imageURL =
+          await storageRef.child("profile_photos/$email.jpeg").getDownloadURL();
     }
 
     return imageURL;
@@ -119,29 +125,9 @@ class RealtimeDatabaseService {
   }
 
   Future<List<UserModel>> getAllUsers() async {
-    List<UserModel> allUsersList = <UserModel>[];
-    final usersList = await FirebaseFirestore.instance
-        .collection("users")
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        UserModel userModel = UserModel.allFields(
-          doc['name'] as String,
-          doc.id as String,
-          doc['birthday'] as String,
-        );
-        allUsersList.add(userModel);
-      });
-      return allUsersList;
-    });
+    final List<UserModel> allUsersList = <UserModel>[];
     return allUsersList;
   }
-
-  // Future<void> getUserFromFirebase(String email) async {
-  //   var data = FirebaseFirestore.instance.doc("user/$email").get().then((value) {
-  //     return value;
-  //   });
-  // }
 
   Future<String?> updateUserName(String name, String email) async {
     try {
@@ -155,4 +141,28 @@ class RealtimeDatabaseService {
     return null;
   }
 
+  Future<List<String>> getAllGoingParties() async {
+    final email = FirebaseAuth.instance.currentUser!.email;
+    final List<String> invitedPartiesIDs = [];
+    await FirebaseFirestore.instance
+        .collection('parties')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (final doc in querySnapshot.docs) {
+        final partyInvitesInfo = doc['guests'].toString();
+
+        if (partyInvitesInfo.contains("$email: going")) {
+          invitedPartiesIDs.add(doc.id);
+        }
+      }
+    });
+    return invitedPartiesIDs;
+  }
+
+  void setStatus(String partyID, String status) {
+    FirebaseFirestore.instance.collection("parties").doc(partyID).update({"guests": {
+      "${FirebaseAuth.instance.currentUser!.email}": status
+    }
+    });
+  }
 }

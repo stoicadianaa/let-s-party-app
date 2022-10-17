@@ -26,7 +26,7 @@ class MyHomePage extends StatelessWidget {
             elevation: 0.0,
             leadingWidth: 100.0,
             toolbarHeight: 80.0,
-            leading: TextButton(
+            /*leading: TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 "Back",
@@ -35,7 +35,7 @@ class MyHomePage extends StatelessWidget {
                   fontSize: 20.0,
                 ),
               ),
-            ),
+            ),*/
             title: const Text(
               "let's party!",
               style: TextStyle(
@@ -87,14 +87,10 @@ class MyHomePage extends StatelessWidget {
                             SizedBox(
                               height: 175,
                               child: ListView.builder(
-                                itemCount: (homeScreenBloc
-                                        .listOfParties['possible'] as List)
-                                    .length,
+                                itemCount: homeScreenBloc.goingParties.length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  final PartyModel party =
-                                      homeScreenBloc.listOfParties['possible']
-                                          [index] as PartyModel;
+                                  final PartyModel party = homeScreenBloc.goingParties[index];
                                   return PartyButton(
                                     image: party.pictureLink!,
                                     name: party.name!,
