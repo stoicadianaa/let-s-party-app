@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lets_party/app/components/party_description.dart';
+import 'package:lets_party/app/home/home_screen.dart';
 import 'package:lets_party/app/mixins/string_mixins.dart';
 import 'package:lets_party/app/party_invited/party_invited_bloc.dart';
 import 'package:lets_party/constants/app_dimens.dart';
@@ -25,7 +26,10 @@ class PartyInvited extends StatelessWidget with StringMixins {
                   style: AppStyles.appBarStyle,
                 ),
                 leading: TextButton(
-                  child: const Text("Back", style: AppStyles.bodyStyle,),
+                  child: const Text(
+                    "Back",
+                    style: AppStyles.bodyStyle,
+                  ),
                   onPressed: () => Navigator.pop(context),
                 ),
                 leadingWidth: 80.0,
@@ -41,7 +45,8 @@ class PartyInvited extends StatelessWidget with StringMixins {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              PartyDescription(partyBloc.party!, partyBloc.hostName ?? "Unknown host"),
+                              PartyDescription(partyBloc.party!,
+                                  partyBloc.hostName ?? "Unknown host",),
                               const SizedBox(
                                 height: AppDimens.padding_3x,
                               ),
@@ -60,12 +65,16 @@ class PartyInvited extends StatelessWidget with StringMixins {
                                       Expanded(
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            // bloc.getHostName();
+                                            partyBloc.setStatusToGoing();
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
                                           },
-                                          style: const ButtonStyle(
-                                              // shape:
-                                              ),
-                                          child: const Text("I'll attend", style: AppStyles.bodyStyle,),
+                                          style: const ButtonStyle(),
+                                          child: const Text(
+                                            "I'll attend",
+                                            style: AppStyles.bodyStyle,
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(
@@ -73,8 +82,16 @@ class PartyInvited extends StatelessWidget with StringMixins {
                                       ),
                                       Expanded(
                                         child: ElevatedButton(
-                                          onPressed: () {},
-                                          child: const Text("I won't attend", style: AppStyles.bodyStyle,),
+                                          onPressed: () {
+                                            partyBloc.setStatusToNotGoing();
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+                                          },
+                                          child: const Text(
+                                            "I won't attend",
+                                            style: AppStyles.bodyStyle,
+                                          ),
                                         ),
                                       )
                                     ],

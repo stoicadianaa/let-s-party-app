@@ -125,29 +125,9 @@ class RealtimeDatabaseService {
   }
 
   Future<List<UserModel>> getAllUsers() async {
-    List<UserModel> allUsersList = <UserModel>[];
-    final usersList = await FirebaseFirestore.instance
-        .collection("users")
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        UserModel userModel = UserModel.allFields(
-          doc['name'] as String,
-          doc.id as String,
-          doc['birthday'] as String,
-        );
-        allUsersList.add(userModel);
-      });
-      return allUsersList;
-    });
+    final List<UserModel> allUsersList = <UserModel>[];
     return allUsersList;
   }
-
-  // Future<void> getUserFromFirebase(String email) async {
-  //   var data = FirebaseFirestore.instance.doc("user/$email").get().then((value) {
-  //     return value;
-  //   });
-  // }
 
   Future<String?> updateUserName(String name, String email) async {
     try {
@@ -170,12 +150,38 @@ class RealtimeDatabaseService {
         .then((QuerySnapshot querySnapshot) {
       for (final doc in querySnapshot.docs) {
         final partyInvitesInfo = doc['guests'].toString();
-
         if (partyInvitesInfo.contains("$email: invited")) {
           invitedPartiesIDs.add(doc.id);
         }
       }
     });
     return invitedPartiesIDs;
+  }
+
+
+  Future<List<String>> getAllGoingParties() async {
+
+    final email = FirebaseAuth.instance.currentUser!.email;
+    final List<String> invitedPartiesIDs = [];
+    await FirebaseFirestore.instance
+        .collection('parties')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (final doc in querySnapshot.docs) {
+        final partyInvitesInfo = doc['guests'].toString();
+        if (partyInvitesInfo.contains("$email: going")) {
+
+          invitedPartiesIDs.add(doc.id);
+        }
+      }
+    });
+    return invitedPartiesIDs;
+  }
+
+  void setStatus(String partyID, String status) {
+    FirebaseFirestore.instance.collection("parties").doc(partyID).update({"guests": {
+      "${FirebaseAuth.instance.currentUser!.email}": status
+    }
+    });
   }
 }
