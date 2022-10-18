@@ -64,7 +64,7 @@ class PartyHost extends StatelessWidget {
                           const SizedBox(
                             height: AppDimens.padding_2x,
                           ),
-                          ElevatedButton(
+                          /*ElevatedButton(
                             onPressed: () {},
                             style: ButtonStyle(
                               minimumSize: MaterialStateProperty.all(
@@ -75,7 +75,7 @@ class PartyHost extends StatelessWidget {
                               "What is needed",
                               style: AppStyles.bodyStyle,
                             ),
-                          ),
+                          ),*/
                         ],
                       )
                     : const Center(
