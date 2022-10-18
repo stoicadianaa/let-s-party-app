@@ -9,9 +9,9 @@ class AppStyles {
     fontFamily: FontFamily.keepOnTrucking,
   );
 
-  static const categorytyle = TextStyle(
+  static const categoryStyle = TextStyle(
     color: jet,
-    fontSize: 24.0,
+    fontSize: 26.0,
     fontFamily: FontFamily.keepOnTrucking,
   );
 

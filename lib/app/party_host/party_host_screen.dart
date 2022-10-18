@@ -103,7 +103,7 @@ class PartyHost extends StatelessWidget {
             children: [
               const Text(
                 "who is coming?",
-                style: AppStyles.categorytyle,
+                style: AppStyles.categoryStyle,
               ),
               const SizedBox(
                 height: AppDimens.padding_2x,
@@ -119,7 +119,7 @@ class PartyHost extends StatelessWidget {
             children: [
               const Text(
                 "waiting for RSVP",
-                style: AppStyles.categorytyle,
+                style: AppStyles.categoryStyle,
               ),
               const SizedBox(
                 height: AppDimens.padding_2x,
@@ -135,7 +135,7 @@ class PartyHost extends StatelessWidget {
             children: [
               const Text(
                 "won’t be able to come",
-                style: AppStyles.categorytyle,
+                style: AppStyles.categoryStyle,
               ),
               const SizedBox(
                 height: AppDimens.padding_2x,
