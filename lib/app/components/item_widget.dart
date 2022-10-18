@@ -16,7 +16,7 @@ class ItemWidget extends StatelessWidget {
     this.quantityVisible = false,
     this.item,
     this.enableItemSelect,
-  this.createPartyBloc,
+    this.createPartyBloc,
   });
 
   final String title;
@@ -34,15 +34,15 @@ class ItemWidget extends StatelessWidget {
       onPressed: () {
         if (enableItemSelect != null && enableItemSelect == true) {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SelectItemCount(
-                        imageLink: imageLink,
-                        itemModel: item!,
-                        createPartyBloc: createPartyBloc!,
-                      )
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) => SelectItemCount(
+                imageLink: imageLink,
+                itemModel: item!,
+                createPartyBloc: createPartyBloc!,
+              ),
+            ),
+          );
         }
       },
       child: Column(
@@ -59,6 +59,7 @@ class ItemWidget extends StatelessWidget {
               child: Image.network(
                 imageLink,
                 height: 110.0,
+                width: 110.0,
                 fit: BoxFit.cover,
               ),
             ),

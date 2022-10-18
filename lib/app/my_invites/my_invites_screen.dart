@@ -57,7 +57,7 @@ class MyInvites extends StatelessWidget with StringMixins {
                           children: [
                             Text(
                               party.name!,
-                              style: AppStyles.categorytyle
+                              style: AppStyles.categoryStyle
                                   .copyWith(fontSize: 24.0),
                             ),
                             const SizedBox(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:lets_party/core/model/categories_model.dart';
+import 'package:lets_party/core/model/item_model.dart';
 import 'package:lets_party/core/model/party_invites_model.dart';
 import 'package:lets_party/core/model/party_model.dart';
 import 'package:lets_party/core/model/user_model.dart';
@@ -39,6 +41,21 @@ class RealtimeDatabaseService {
       );
     }
     loadingDone = true;
+  }
+
+  //categories w/o loading done thing
+  static Future<List<CategoriesModel>> getCategories2() async {
+    List<CategoriesModel> categoriesList = [];
+    final ref = FirebaseDatabase.instance.ref("categories/");
+    final event = await ref.once();
+    final Map<String, dynamic> categories =
+        Map<String, dynamic>.from(event.snapshot.value! as Map);
+    for (final category in categories["listOfCategories"] as List) {
+      categoriesList.add(
+        CategoriesModel.fromMap(category as Map),
+      );
+    }
+    return categoriesList;
   }
 
   Future<Map> getAllParties() async {
@@ -158,9 +175,7 @@ class RealtimeDatabaseService {
     return invitedPartiesIDs;
   }
 
-
   Future<List<String>> getAllGoingParties() async {
-
     final email = FirebaseAuth.instance.currentUser!.email;
     final List<String> invitedPartiesIDs = [];
     await FirebaseFirestore.instance
@@ -169,8 +184,7 @@ class RealtimeDatabaseService {
         .then((QuerySnapshot querySnapshot) {
       for (final doc in querySnapshot.docs) {
         final partyInvitesInfo = doc['guests'].toString();
-        if (partyInvitesInfo.contains("$email: going")) {
-
+        if (partyInvitesInfo.contains("$email: coming")) {
           invitedPartiesIDs.add(doc.id);
         }
       }
@@ -179,9 +193,96 @@ class RealtimeDatabaseService {
   }
 
   void setStatus(String partyID, String status) {
-    FirebaseFirestore.instance.collection("parties").doc(partyID).update({"guests": {
-      "${FirebaseAuth.instance.currentUser!.email}": status
-    }
+    FirebaseFirestore.instance.collection("parties").doc(partyID).update({
+      "guests": {"${FirebaseAuth.instance.currentUser!.email}": status}
     });
+  }
+
+  Future<List<CategoriesModel>> getListOfNeededItems(String partyID) async {
+    final Map<String, int> listOfItems = {};
+    List<CategoriesModel> listOfNeededItems = [];
+    final databaseResponse = (await FirebaseFirestore.instance
+            .collection('parties')
+            .doc(partyID)
+            .get())['needed'].toString();
+
+    final List<String> listOfSeparatedStrings =
+        databaseResponse.substring(1, databaseResponse.length - 1).split(", ");
+
+    for (String item in listOfSeparatedStrings) {
+      listOfItems[item.split(": ")[0]] = int.parse(item.split(": ")[1]);
+    }
+
+    final categoriesList = await getCategories2();
+
+    for (final CategoriesModel category in categoriesList) {
+      const categoryAlreadyAdded = false;
+      for (final ItemModel item in category.items) {
+        if (listOfItems.containsKey(item.name)) {
+          if (!categoryAlreadyAdded) {
+            listOfNeededItems.add(CategoriesModel(category.categoryName, []));
+          }
+          listOfNeededItems.last.items.add(item);
+        }
+      }
+    }
+
+    return listOfNeededItems;
+  }
+
+  Future<Map<String, int>> getListOfItemsToBring(String partyID) async {
+    final String email = FirebaseAuth.instance.currentUser!.email!;
+    final firestoreInstance =
+        (await FirebaseFirestore.instance.collection('users')).doc(email);
+
+    Map<String, int> finalItemsList = {};
+
+    bool condition = (await firestoreInstance.get()).data()!.containsKey(partyID);
+
+    if(condition)
+    {
+      List<String> itemsAsString =
+          ((await firestoreInstance.get())[partyID].toString())
+              .replaceAll("{", "")
+              .replaceAll("}", "")
+              .split(",");
+
+      for (String item in itemsAsString) {
+        List<String> itemData = item.split(": ");
+        finalItemsList.addAll({itemData[0].trim(): int.parse(itemData[1])});
+      }
+
+    }
+
+    return finalItemsList;
+  }
+
+  Future<void> addItemToParty(Map<String, int> currentList, String itemName, String partyID,
+      int valueToIncrement) async {
+    final firestore = await (FirebaseFirestore.instance.collection('users'))
+        .doc(FirebaseAuth.instance.currentUser!.email);
+    if (currentList.containsKey(itemName)) {
+      currentList[itemName] = currentList[itemName]! + valueToIncrement;
+    } else {
+      currentList[itemName] = 1;
+    }
+
+    firestore.update({partyID: currentList});
+
+    // if (!isPartyInUser) {
+    //   firestoreInstance.update({partyID: {
+    //     itemName: 0
+    //   }});
+    // }
+
+    // (await FirebaseFirestore.instance.collection('users')).doc(email).update({partyID: {
+    //   itemName: FieldValue.increment(valueToIncrement)
+    // }});
+  }
+
+  static Future<int> getNeededQuantity(String itemName, String partyID) async {
+
+    return int.parse((await FirebaseFirestore.instance.collection('parties').doc(partyID).get())[itemName].toString());
+
   }
 }
